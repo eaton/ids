@@ -1,0 +1,33 @@
+{
+  "name": "@eatonfyi/ids",
+  "version": "1.0.0",
+  "description": "Generate nano IDs, UUIDs, and other identifiers.",
+  "types": "./dist/index.d.ts",
+  "exports": "./dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "shx rm -rf dist && pkgroll",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "asin",
+    "amazon",
+    "scraper"
+  ],
+  "author": "eaton",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.11.30",
+    "pkgroll": "^2.0.2",
+    "shx": "^0.3.4",
+    "tsx": "^4.7.1",
+    "typescript": "^5.4.3"
+  },
+  "dependencies": {
+    "@types/object-hash": "^3.0.6",
+    "@types/uuid": "^9.0.8",
+    "nanoid": "^5.0.6",
+    "object-hash": "^3.0.0",
+    "uuid": "^9.0.1"
+  }
+}
