@@ -2,12 +2,37 @@
   "name": "@eatonfyi/ids",
   "version": "1.0.0",
   "description": "Generate nano IDs, UUIDs, and other identifiers.",
-  "types": "./dist/index.d.ts",
-  "exports": "./dist/index.js",
   "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.cts",
+  "exports": {
+    "require": {
+      "types": "./dist/index.d.cts",
+      "default": "./dist/index.cjs"
+    },
+    "import": {
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
+    }
+  },
+  "files": [
+    "/dist",
+    "README.md"
+  ],
   "scripts": {
-    "build": "shx rm -rf dist && pkgroll",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "pkgroll",
+    "clean": "shx rm -rf dist",
+    "prepare": "npm run clean && npm run build",
+    "test": "ava"
+  },
+  "ava": {
+    "extensions": {
+      "ts": "module"
+    },
+    "nodeArguments": [
+      "--import=tsimp"
+    ]
   },
   "keywords": [
     "asin",
@@ -18,9 +43,10 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^20.11.30",
+    "ava": "^6.1.2",
     "pkgroll": "^2.0.2",
     "shx": "^0.3.4",
-    "tsx": "^4.7.1",
+    "tsimp": "^2.0.11",
     "typescript": "^5.4.3"
   },
   "dependencies": {
