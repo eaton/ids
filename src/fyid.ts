@@ -21,6 +21,7 @@
  */
 
 import { isbn } from "./isbn.js";
+import { asin } from "./asin.js";
 import { uuid } from "./uuid.js";
 
 export function fyid(input: string, strict = false) {
@@ -42,9 +43,8 @@ export function fyid(input: string, strict = false) {
       }
 
       // Looks ASIN-like, let's assume it is! In theory this will also catch
-      // 
-      if (/^\s*(B\d{2}[A-Z\d]{7}|\d{9}[X\d])\s*$/.test(segments[1])) {
-        return ['', 'asin', segments[1]].join(delimiter);
+      if (asin.isValid(segments[1])) {
+        return ['', asin.isIsbn10(segments[1]) ? 'isbn' : 'asin', segments[1]].join(delimiter);
       }
 
       if (uuid.isValid(segments[1])) {
