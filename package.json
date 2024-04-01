@@ -50,9 +50,9 @@
     "typescript": "^5.4.3"
   },
   "dependencies": {
-    "@evanion/urn": "^1.1.1",
     "@types/object-hash": "^3.0.6",
     "@types/uuid": "^9.0.8",
+    "isbn3": "^1.1.46",
     "nanoid": "^5.0.6",
     "object-hash": "^3.0.0",
     "uuid": "^9.0.1"
