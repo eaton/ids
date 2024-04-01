@@ -3,6 +3,7 @@ import { fyid } from '../src/index.js';
 
 test('generate fyids', t => {
   t.is(fyid(':person:some-name'), ':person:some-name');
+  t.is(fyid(':1138493988'), ':isbn:9781138493988');
   t.is(fyid(':B085KMWVN7'), ':asin:B085KMWVN7');
   t.is(fyid(':21a576c9-8dcb-462a-b3ad-355608867717'), ':uuid:21a576c9-8dcb-462a-b3ad-355608867717');
   t.is(fyid(':person:some-name'), ':person:some-name');
