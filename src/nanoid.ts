@@ -14,5 +14,5 @@ export function nanoid(size?: number, alphabet?: string) {
 }
 
 export function urlid(size?: number) {
-  return customAlphabet(urlAlphabet, size);
+  return nanoid(size, urlAlphabet);
 }
