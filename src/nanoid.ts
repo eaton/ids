@@ -1,4 +1,4 @@
-import { nanoid as nanoFunc, customAlphabet } from 'nanoid';
+import { nanoid as nanoFunc, customAlphabet, urlAlphabet } from 'nanoid';
 export { urlAlphabet } from 'nanoid';
 
 /**
@@ -11,4 +11,8 @@ export { urlAlphabet } from 'nanoid';
 export function nanoid(size?: number, alphabet?: string) {
   if (alphabet === undefined) return nanoFunc(size);
   return customAlphabet(alphabet)(size);
+}
+
+export function urlid(size?: number) {
+  return customAlphabet(urlAlphabet, size);
 }
