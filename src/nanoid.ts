@@ -9,6 +9,7 @@ export const alphabets = {
   NoLookalikes: '6789BCDFGHJKLMNPQRTWbcdfghjkmnpqrtwz',
   DNA: 'GATC',
   Binary: '01',
+  Senary: '012345',
   Octal: '01234567',
   ...Chars,
 };
