@@ -8,7 +8,7 @@ export const alphabets = {
   UrlSafe: urlAlphabet,
   NoLookalikes: '6789BCDFGHJKLMNPQRTWbcdfghjkmnpqrtwz',
   Binary: '01',
-  GATC: 'GATC',
+  DNA: 'GATC',
   ...Chars,
 };
 
@@ -28,7 +28,7 @@ export function nanoid(size?: number, alphabet?: string) {
  * Hashes any value and returns a string using the same formatting options as nanoid.
  * 
  * Note: Hashing generates the same amount of data regardless of the input. Using the
- * default nanoid alphabet, it producdes 27-character nanohashes. Reducing the size
+ * default nanoid alphabet, it produces 27-character nanohashes. Reducing the size
  * will truncate the hash, increasing the chance of collision. Reducing the numbr of 
  * characters in the alphabet will increase the size of the hash output, or (if the
  * size is hard-coded) increase the chance of collision.
@@ -39,6 +39,6 @@ export function nanoid(size?: number, alphabet?: string) {
  */
 export function nanohash(input: NotUndefined, size?: number, alphabet?: string) {
   const encoder = new BufferEncoder(alphabet ?? alphabets.UrlSafe);
-  const buffer = hash(input, { encoding: 'buffer' });
+  const buffer = hash(input, { encoding: 'buffer', algorithm: 'md5' });
   return encoder.encode(buffer).slice(0, size);
 }
