@@ -1,4 +1,3 @@
-import { WriteStream } from 'fs';
 import hash from 'object-hash';
 
 export { hash }

@@ -1,5 +1,5 @@
 import test from 'ava';
-import { nanoid, nanohash } from '../src/index.js';
+import { nanoid, nanohash, alphabets } from '../src/index.js';
 
 test('size control', t => {
   t.is(nanoid(5).length, 5);
@@ -9,13 +9,7 @@ test('size control', t => {
 
 test('nano hash', t => {
   const url = 'https://www.example.com/some-long-url/with.html';
-  const hash = nanohash(url);
-  const shortHash = nanohash(url, 10);
-  t.not(hash, shortHash);
-})
 
-test('long hash', t => {
-  const url = 'https://www.example.com/some-long-url/with.html';
-  const hash = nanohash(url);
-  t.assert(hash.length > 20);
+  t.is(nanohash(url), 'xwrLAat');
+  t.is(nanohash(url, alphabets.DNA), 'AACCTACCGTTTATAGGCCCC');
 })

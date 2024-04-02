@@ -17,7 +17,7 @@ Light wrapper around assorted ID generation and validation functions. Currently:
 
 - `hash(input: NotUndefined)` just wraps the [object-hash](https://github.com/puleos/object-hash) library for convenience.
 - `md5()`, `sha1()`, `sha256()`, `sha256()` are convenience wrappers for `object-hash`'s algorithm-specific hashing options.
-- See `nanohash`, below, for an md5 hash formatted to match the `nanoid` IDs.
+- See `nanohash`, below, for an alternative that's not quite as secure but nice and short.
 
 ## EatonFYI internal IDs
 
@@ -26,7 +26,7 @@ Light wrapper around assorted ID generation and validation functions. Currently:
 ## NanoIDs
 
 - `nanoid(size?: number, alphabet?: string)` wraps the nanoid library, which generates arbitrarily-sized, url-safe, collision-resistant IDs. Shorter than UUIDs by default, with options to control the dictionary of characters used and the final length of the ID.
-- `nanohash(input: any, size?: number, alphabet?: string)` uses the same size/alphabet options as nanoid, but the data is the hash of an input object or string rather than a random value. Under the hood, it uses the same `object-hash` library as the `uuid()` function, along with the [bufferbase](https://github.com/misebox/bufferbase) library to handle the dictionary-based string conversion.
+- `nanohash(input: any, size?: number, alphabet?: string)` uses a [simpler hashing algorithm](https://github.com/planttheidea/hash-it) than the UUID and hash helpers, but leverages the [bufferbase](https://github.com/misebox/bufferbase) library to convert them into the same dictionary-based format as nanoid. By default hashes are 7 characters long, but that will shift around if longer/shorter alphabets are passed in.
 - `alphabets` is a useful list of potential character sets that can be used with nanoid and nanohash. URL Safe strings are the default for both, but options like 'Uppercase' and 'NoLookalikes' can be handy as well.
 
 ## Social Security Numbers
