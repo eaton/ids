@@ -1,6 +1,6 @@
 import { v4 as uuidv4, v5 as uuidv5, validate } from 'uuid';
 import hash from 'object-hash';
-
+import { NotUndefined } from 'object-hash';
 /**
  * Given input, hashes the input and generates a UUID string from the
  * hash value. If no input is given, a random UUID is returned.
@@ -11,7 +11,7 @@ export function uuid(input?: unknown): string {
   return uuid.random()
 }
 
-uuid.hash = (input: string | object | null) => {
+uuid.hash = (input: NotUndefined) => {
   const hashOutput = hash(input, { encoding: 'buffer' });
   return uuidv5(hashOutput, uuid.namespace);
 }

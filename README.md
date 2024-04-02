@@ -16,7 +16,7 @@ Light wrapper around assorted ID generation and validation functions. Currently:
 
 ## NanoIDs
 
-`nanoid(size?: number, alphabet?: string)` wraps the nanoid library, handy whne you need random identifiers that are less cumbersome than UUIDs. `urlid(size?: number)` is a shortcut for making a nanoid with URL-safe characters.
+`nanoid(size?: number, alphabet?: string)` wraps the nanoid library, handy whne you need random identifiers that are less cumbersome than UUIDs. `urlid(size?: number)` is a shortcut for making a nanoid with URL-safe characters. Similarly, the `nanohash(input: any, size?: number, alphabet?: string)` function uses the same alphabet to encode a hash value, optionally slicing it to a desired length. (Obviously, at the cost of hash collision probability).
 
 ## Social Security Numbers
 
