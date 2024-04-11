@@ -19,10 +19,6 @@ Light wrapper around assorted ID generation and validation functions. Currently:
 - `md5()`, `sha1()`, `sha256()`, `sha256()` are convenience wrappers for `object-hash`'s algorithm-specific hashing options.
 - See `nanohash`, below, for an alternative that's not quite as secure but nice and short.
 
-## EatonFYI internal IDs
-
-- `fyid(input: string)` generates a loosely URN-like unique identifier for an item in my personal knowledgebase. ISBNs, ASINs, and UUIDs are automatically recognized. This will almost certainly change, get a validator, and get a self-contained `expand()` function to convert short fyid syntax into 'full' fyids. (e.g., `:1138493988` to `:isbn:9781138493988`)
-
 ## NanoIDs
 
 - `nanoid(size?: number, alphabet?: string)` wraps the nanoid library, which generates arbitrarily-sized, url-safe, collision-resistant IDs. Shorter than UUIDs by default, with options to control the dictionary of characters used and the final length of the ID.
