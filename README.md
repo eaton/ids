@@ -42,3 +42,7 @@ Light wrapper around assorted ID generation and validation functions. Currently:
 - `uuid.random()` can be used to unambiguously generate a random UUID4.
 - `uuid.setNamespace()` can be used to set a custom namespace for UUID5 generation; it must be a valid UUID.
 - `uuid.namespaces` provides convenience consts for the official [URL and DNS namespaces](https://datatracker.ietf.org/doc/html/rfc4122.html#appendix-C); `uuid.namespaces.fyi` is the one I use by default.
+
+## ULIDs
+
+- `ulid()` generates a unique, creation-time-sortable identifier that's URL-safe and a touch shorter than a UUID. Uses the [ulid](https://github.com/ulid/javascript) reference library.
