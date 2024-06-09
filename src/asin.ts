@@ -2,7 +2,7 @@ import ISBN3 from 'isbn3';
 const { parse } = ISBN3;
 
 export function asin(input: string) {
-  return asin.isValid(input) ? asin : undefined;
+  return asin.isValid(input) ? input : undefined;
 }
 
 asin.productPage = 'https://www.amazon.com/dp/';
