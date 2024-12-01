@@ -11,7 +11,8 @@ t.test('size control', t => {
 t.test('nano hash', t => {
   const url = 'https://www.example.com/some-long-url/with.html';
 
-  t.equal(nanohash(url), 'xwrLAat');
-  t.equal(nanohash(url, alphabets.DNA), 'AACCTACCGTTTATAGGCCCC');
+  t.equal(nanohash(url), 'enUlZ79SGo');
+  t.equal(nanohash(url, undefined, alphabets.DNA), 'TGAGTAACATTCCAAGGCATATTCAGAT');
+
   t.end();
 })

@@ -9,7 +9,7 @@ export type Hasher = {
 }
 
 export type Helper = {
-  extract: (input: NotUndefined) => string | undefined;
+  parse: (input: NotUndefined) => string | undefined;
   isValid: (input: string) => boolean;
   inspect: (input: string) => Info;
   format: (input: string, style?: string) => string;

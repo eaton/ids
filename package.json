@@ -21,6 +21,7 @@
     "README.md"
   ],
   "scripts": {
+    "demo": "node ./scripts/demo.mjs",
     "build": "pkgroll --clean-dist --minify",
     "prepare": "npm run clean && npm run build",
     "test": "tap"
@@ -43,10 +44,10 @@
     "typescript": "^5.7.2"
   },
   "dependencies": {
+    "@sindresorhus/fnv1a": "^3.1.0",
     "@types/object-hash": "^3.0.6",
     "bufferbase": "^1.3.0",
     "gtin": "^1.0.2",
-    "hash-it": "^6.0.0",
     "isbn3": "^1.2.3",
     "nanoid": "^5.0.9",
     "object-hash": "^3.0.0",

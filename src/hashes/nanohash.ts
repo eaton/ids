@@ -1,22 +1,33 @@
 import { Converter } from 'bufferbase';
-import hash from 'hash-it';
+import fnv1a from '@sindresorhus/fnv1a';
+import type { NotUndefined } from '../index.js';
+import hash from 'object-hash';
 import { alphabets } from '../alphabets.js';
 
-// TODO: Evaluate potential pros and cons with the object-hash vs hash-it libraries.
-// We're not using the level of control we get with object-hash, but its explicit
-// support for a variety of algorithms is comforting as opposed to hash-it's loosey
-// goosey "you get a number!" approach.
-
 /**
- * Hashes any value and returns a string using the same formatting options as nanoid.
+ * Hashes any value and returns a string using nanoid-style formatting options.
  * 
- * Note: Hashing generates the same amount of data regardless of the input. Reducing
- * the number of characters in the alphabet will increase the size of the hash output.
+ * Note: The `size` parameter controls the number of hash bytes used internally,
+ * not the final character length. Increasing it *will* increase the length of the
+ * hash, but the final hash length ultimately depends on the number of encoding chars
+ * available in the alphabet.
+ * 
+ * The default options (64 bits encoded as url-safe characters) results in 10 to 11
+ * characteer long hashes.
  *
  * @export
+ * @param size The number of hash bytes to generate; defaults to 32.
  * @param alphabet The list of valid characters to use when generating the hash.
  */
-export function nanohash(input: unknown, alphabet?: string) {
+export function nanohash(input: NotUndefined, size: 32 | 64 | 128 | 256 | 512 | 1024 = 64, alphabet?: string) {
   const converter = new Converter(alphabets.Decimal, alphabet ?? alphabets.UrlSafe);
-  return converter.convert(hash(input).toString())
+  return converter.convert(fnv1a(hash(input, { algorithm: 'passthrough' }), { size }).toString());
+}
+
+/**
+ * Alias for the 32-bit URL-safe version of `nanohash`; it generates very tiny
+ * 5-6 character hashes, but collisions will be much more common.
+ */
+export function picohash(input: NotUndefined) {
+  return nanohash(input, 32);
 }
