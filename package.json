@@ -22,8 +22,8 @@
   ],
   "scripts": {
     "demo": "node ./scripts/demo.mjs",
-    "build": "pkgroll --clean-dist --minify",
-    "prepare": "npm run clean && npm run build",
+    "build": "pkgroll",
+    "prepare": "pkgroll --clean-dist --minify",
     "test": "tap"
   },
   "keywords": [
