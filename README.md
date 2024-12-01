@@ -1,6 +1,32 @@
 # Eaton IDs
 
-Light wrapper around assorted ID generation and validation functions. Currently:
+A wrapper/nomralizer around libraries for a bunch of different ID and hash formats I've had to deal with on my personal projects.
+
+If you need something lightweight to deal with one particular ID type or generate hashes for a specific purpose, this is not the library for you; it'll be much simpler to pull in one of the specific libraries this one uses under the hood:
+
+- [gtin](https://github.com/xbpf/gtin) for GTIN, UPC, EAN, etc.
+- [isbn3](https://github.com/inventaire/isbn3) for ISBN10 and ISBN13
+- [nanoid](https://github.com/ai/nanoid) for easy, URL-safe uinque IDs
+- [ulid](https://github.com/ulid/javascript) to generate and parse ULIDs (which might be pointless now that UUIDv7 is here)
+- [uuid](https://github.com/uuidjs/uuid) for UUIDv1-UUIDv7 support
+- [uuid25](https://github.com/uuid25/javascript) to format UUIDs in assorted ways
+
+## The way it works
+
+Everything is broken down into three kinds of things:
+
+- `Generators` are functions that spit out random IDs when called. They may support additional parameters to control the ID generation process; nanoid, for example, accepts optinoal `length` and custom alphabet properties but does fine without them.
+- `Hashers` accept some *thing* that a hash value is being generated for. They, too, may accept additional parameters to control the hash generation process but without the thing-to-be-hashed they're just an ID generator.
+- `Helpers` are a set of standard sub-properties to validate, format, and inspect already-created IDs and hashes. Some Generators and Hashers also support Helpers.
+  - `<helper>.extract(input: NotUndefined)` returns an ID when given some messy input data, or `undefined` if an ID can't be found. This is intended as a tool for extracting valid IDs from potentially messy input, for example turning Amazon URLs into ASINs when possible.
+  - `<helper>.isValid(input: string)` to validate input data, returning true or false.
+  - `<helper>.format(input: string, style?: string)` to pretty-print the parsed ID in its canonical format. Some ID types support additional format types as a second parameter.
+  - `<helper>.minify(input: string)` to output the shortest valid format of the ID, if available. A hyphenated North American ISBN-13 is collapsed to an unhyphenated ISBN-10 if possible, for example.
+  - `<helper>.inspect(input: string)` to return the parsed information inside an ID format. At the very least, the `isValid` property of this information will be populated with a boolean. If the ID can be parsed, the `formatted` and `minified` properties will also be populated. Other formats add fun stuff like "is there a timestamp hidden in the first *n* bytes" and "is this ISBN for Japan or Europe" and so on.
+
+Generators are only meant to *create* unique IDs given a set of input parameters. NanoID, ULID, and UUIDv1/v3/v5 are examples.
+
+Hashers are meant to accept almost any input and generate some kind of easily-comparable representation on the other side. Nanohash and UUIDv5/v7 are examples.
 
 ## Amazon Product IDs
 
