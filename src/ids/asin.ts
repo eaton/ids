@@ -2,9 +2,30 @@ import ISBN3 from 'isbn3';
 import { Info } from '../types';
 const { parse, hyphenate } = ISBN3;
 
+const asinOrISBN10 = '(B[\\dA-Z]{9}|\\d{9}(?:X|\\d))';
+const amazonUrlPrefix = '(?:dp|gp\\/video\\/detail|gp\\/product)';
+
+/**
+ * Amazon Product Identifiers generally consist of a 10-character alphanumeric
+ * string starting with a 'B', *or* a valid ISBN10. The format isn't officially
+ * documented; in the future additional letter codes may be added to expand
+ * the range of IDs.
+ * 
+ * @see [the story behind asins](https://inventlikeanowner.com/blog/the-story-behind-asins-amazon-standard-identification-numbers/)
+ * 
+ * The top-level `asin()` function is a convenience alias for `asin.parse()`.
+ *
+ * @returns A valid ASIN string, or `undefined`
+ */
 export function asin(input: string) {
   return asin.parse(input);
 }
+
+/**
+ * Attempts to extract a valid Amazon product ID from a string or URL.
+ * 
+ * @returns A valid ASIN string, or `undefined`
+ */
 asin.parse = (input: string | URL) => {
   const trimmed = input.toString().trim();
   if (URL.canParse(trimmed)) {
@@ -15,11 +36,16 @@ asin.parse = (input: string | URL) => {
   }
   return undefined;
 }
-const asinOrISBN10 = '(B[\\dA-Z]{9}|\\d{9}(?:X|\\d))';
-const amazonUrlPrefix = '(?:dp|gp\\/video\\/detail|gp\\/product)';
 
 asin.isValid = (input: string) => new RegExp('^' + asinOrISBN10 + '$').test(input);
 asin.isISBN = (input: string) => !!parse(input)?.isbn10;
+
+/**
+ * Attempts to extract a valid Amazon product ID URL. This will reject
+ * raw but valid ASINs if they're not actually part of an Amazon URL. 
+ *
+ * @returns A valid ASIN string, or `undefined`
+ */
 asin.fromURL = (input: string | URL): string | undefined => {
   const pattern = new RegExp('\/' + amazonUrlPrefix + '\/' + asinOrISBN10);
   const value = pattern.exec(input.toString())?.[1];
@@ -40,6 +66,13 @@ asin.format = (input: string, style: 'asin' | 'isbn10h' | 'url' = 'asin') => {
   }
   return undefined;
 }
+
+/**
+ * Attempts to extract a valid Amazon product ID from a string or URL,
+ * and returns as much information about the ASIN as possible.
+ *
+ * @returns A valid ASIN string, or `undefined`
+ */
 asin.inspect = (input: string | URL) => {
   const parsed = asin.parse(input);
   const out: Info = {
