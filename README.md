@@ -7,7 +7,7 @@ If you need something lightweight to deal with one particular ID type or generat
 - [gtin](https://github.com/xbpf/gtin) for GTIN, UPC, EAN, etc.
 - [isbn3](https://github.com/inventaire/isbn3) for ISBN10 and ISBN13
 - [nanoid](https://github.com/ai/nanoid) for easy, URL-safe uinque IDs
-- [ulid](https://github.com/ulid/javascript) to generate and parse ULIDs (which might be pointless now that UUIDv7 is here)
+- [ulid](https://github.com/perry-mitchell/ulidx) to generate and parse ULIDs (which might be pointless now that UUIDv7 is here)
 - [uuid](https://github.com/uuidjs/uuid) for UUIDv1-UUIDv7 support
 - [uuid25](https://github.com/uuid25/javascript) to format UUIDs in assorted ways
 
@@ -51,11 +51,6 @@ Hashers are meant to accept almost any input and generate some kind of easily-co
 - `nanohash(input: any, size?: number, alphabet?: string)` uses a [simpler hashing algorithm](https://github.com/planttheidea/hash-it) than the UUID and hash helpers, but leverages the [bufferbase](https://github.com/misebox/bufferbase) library to convert them into the same dictionary-based format as nanoid. By default hashes are 7 characters long, but that will shift around if longer/shorter alphabets are passed in.
 - `alphabets` is a useful list of potential character sets that can be used with nanoid and nanohash. URL Safe strings are the default for both, but options like 'Uppercase' and 'NoLookalikes' can be handy as well.
 
-## Social Security Numbers
-
-- `ssn.isValid(input: string)` validates US Social Security Numbers, which would be terrible to use in a random personal web project but serve as a nice test case.
-- `ssn.format(input: string)` pretty-prints SSNs with dashes in the proper locations.
-
 ## UUIDs
 
 - `uuid()` generates a random UUID4.
@@ -67,4 +62,4 @@ Hashers are meant to accept almost any input and generate some kind of easily-co
 
 ## ULIDs
 
-- `ulid()` generates a unique, creation-time-sortable identifier that's URL-safe and a touch shorter than a UUID. Uses the [ulid](https://github.com/ulid/javascript) reference library.
+- `ulid()` generates a unique, creation-time-sortable identifier that's URL-safe and a touch shorter than a UUID. Uses the [ulid](https://github.com/perry-mitchell/ulidx) library.

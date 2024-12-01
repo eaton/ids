@@ -75,19 +75,23 @@ uuid.inspect = (input: string) => {
     const parsed = Uuid25.parse(input);
 
     out.version = uuidLib.version(input);
-    if (out.version === 1) {
-      out.timestamp = v1date(input);
-    } else if (out.version === 7) {
-      out.timestamp = v7date(input);
+    if (out.version === 1 || out.version === 7) {
+      out.date = uuid.getDate(input);
+      out.timestamp = uuid.getTimestamp(input);
     }
 
     out.minified = parsed.value;
     out.formatted = parsed.toHyphenated();
-    out.hex = parsed.toHex();
-    out.braced = parsed.toBraced();
-    out.urn = parsed.toUrn();
-    out.bytes = parsed.toBytes();
 
+    out.styles = {
+      braced: parsed.toBraced(),
+      hex: parsed.toHex(),
+      hyphenated: out.minified,
+      urn: parsed.toUrn(),
+      uuid25: out.minified,
+    }
+  
+    bytes: parsed.toBytes();
   }
   return out;
 }
@@ -100,12 +104,16 @@ uuid.v6 = uuidLib.v6;
 uuid.v7 = uuidLib.v7;
 
 uuid.random = uuidLib.v4;
-uuid.sortable = uuidLib.v7;
 uuid.hash = (input: NotUndefined) => {
   return uuidLib.v5(
-    hash(input, { encoding: 'buffer', algorithm: 'sha1' }),
+    hash(input, { algorithm: 'passthrough' }),
     uuid.getNamespace()
   );
+}
+uuid.sortable = (input?: number | Date) => {
+  if (input === undefined) return uuidLib.v7();
+  if (typeof input === 'number') return uuidLib.v7({ msecs: input });
+  else return uuidLib.v7({ msecs: input.getTime() });
 }
 uuid.url = (input: string | URL) => uuidLib.v5(input.toString(), uuidLib.v5.URL);
 
@@ -126,6 +134,18 @@ uuid.setNamespace = (input: string) => {
     throw new Error("Can't use invalid UUID as namespace");
   };
 };
+
+uuid.getDate = (input: string) => {
+  try {
+    const parsed = Uuid25.parse(input).toHyphenated();
+    const version = uuidLib.version(parsed);
+    if (version === 1) return v1date(parsed);
+    if (version === 7) return v7date(parsed);
+  } catch {
+    return undefined;
+  }
+}
+uuid.getTimestamp = (input: string) => uuid.getDate(input)?.valueOf();
 
 const v1date = (input: string) => {
   const parts = input.split('-');

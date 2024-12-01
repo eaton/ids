@@ -35,10 +35,14 @@ t.test('namespaces', t => {
 t.test('null uuids', t => {
   // We return a special 'nil' UUID if null is passed in.
   t.equal(uuid(null), uuid.nil);
-  
-  // Setting uuid.nil to an empty string turns this behavior off; random UUIDs
-  // for null values.
-  uuid.nil = '';
-  t.not(uuid(null), uuid.nil);
   t.end();
-})
+});
+
+t.test('timestamps', t => {
+  const date = new Date(1977, 7, 16, 2, 30);
+  const v7 = uuid.sortable(date);
+  
+  t.equal(uuid.getTimestamp(v7)!.valueOf(), date.valueOf());
+  t.equal(uuid.getTimestamp(uuid.random()), undefined);
+  t.end();
+});

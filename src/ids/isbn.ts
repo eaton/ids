@@ -23,7 +23,7 @@ isbn.inspect = (input: string) => {
 
   if (parsed) {
     out.formatted = hyphenate(input);
-    out.minified = parsed.isbn10 ?? parsed.isbn13;
+    out.minified = isbn.minify(input);
 
     out.segments = {
       prefix: parsed.prefix,
@@ -33,13 +33,20 @@ isbn.inspect = (input: string) => {
       check: parsed.check
     }
 
-    out.isbn10 = parsed.isbn10;
-    out.isbn13 = parsed.isbn13;
+    out.styles = {
+      isbn10: parsed.isbn10,
+      isbn13: parsed.isbn13,
+      isbn10h: parsed.isbn10h,
+      isbn13h: parsed.isbn13h,
+    }
   }
   return out;
 }
 
 isbn.isbn10 = asIsbn10;
+isbn.isbn10h = (input: string) => hyphenate(asIsbn10(input));
 isbn.isbn13 = asIsbn13;
+isbn.isbn13h = (input: string) => hyphenate(asIsbn13(input));
+
 isbn.format = hyphenate;
-isbn.minify = asIsbn10;
+isbn.minify = (input: string) => isbn.isbn10(input) ?? isbn.isbn13(input);
