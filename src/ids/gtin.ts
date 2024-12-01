@@ -12,9 +12,9 @@ export const upc = gtin;
  * products. While primarily used with barcodes, they can also be used as RFID
  * frequencies. Neat.
  * 
- * A full-length GTIN is 14 digits long; the final digit is a checksum. Short
- * GTIN formats (8, 10, 11, 13 digits, etc), and GTIN-13s are functionally
- * equivalent to North American UPC-A codes.
+ * A full-length GTIN is 14 digits long; short GTIN formats (8, 10, 11, 13
+ * digits, etc), and GTIN-13s are functionally equivalent to North American
+ * UPC-A codes.
  * 
  * The top-level `gtin()` function is a convenience alias for `gtin.parse()`.
  *

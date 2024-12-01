@@ -2,7 +2,6 @@ import ISBN3 from 'isbn3';
 import { Info } from '../types';
 const { parse, audit, asIsbn10, asIsbn13, hyphenate } = ISBN3;
 
-
 /**
  * International Standard Book Numbers are kind-of-usually-unique IDs for
  * commercially sold print and electronic books. The original 1967 era ISBN
