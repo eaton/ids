@@ -29,21 +29,7 @@ uuid.isValid = (input: string) => {
   return uuidLib.validate(input);
 }
 
-uuid.minify = (input: string) => {
-  return uuidLib.v5(
-    hash(input, { encoding: 'buffer', algorithm: 'sha1' }),
-    uuid.getNamespace()
-  );
-}
-
-uuid.bytes = (input: string) => {
-  try {
-    const parsed = Uuid25.parse(input);
-    return parsed.toBytes();
-  } catch {
-    return undefined;
-  }
-}
+uuid.minify = (input: string) => uuid.format(input, 'hex');
 
 uuid.format = (input: string, style: styles = 'hyphenated') => {
   try {
@@ -60,6 +46,15 @@ uuid.format = (input: string, style: styles = 'hyphenated') => {
       case 'uuid25':
         return parsed.value;
     }
+  } catch {
+    return undefined;
+  }
+}
+
+uuid.bytes = (input: string) => {
+  try {
+    const parsed = Uuid25.parse(input);
+    return parsed.toBytes();
   } catch {
     return undefined;
   }
@@ -104,21 +99,26 @@ uuid.v6 = uuidLib.v6;
 uuid.v7 = uuidLib.v7;
 
 uuid.random = uuidLib.v4;
+
 uuid.hash = (input: NotUndefined) => {
   return uuidLib.v5(
     hash(input, { algorithm: 'passthrough' }),
     uuid.getNamespace()
   );
 }
+
 uuid.sortable = (input?: number | Date) => {
   if (input === undefined) return uuidLib.v7();
   if (typeof input === 'number') return uuidLib.v7({ msecs: input });
   else return uuidLib.v7({ msecs: input.getTime() });
 }
+
 uuid.url = (input: string | URL) => uuidLib.v5(input.toString(), uuidLib.v5.URL);
 
 uuid.nil = uuidLib.NIL;
+
 uuid.max = uuidLib.MAX;
+
 uuid.namespaces = {
   fyi: '5713d04c-59b3-430e-b75f-e43e44754795',
   url: uuidLib.v5.URL,
@@ -127,6 +127,7 @@ uuid.namespaces = {
 }
 
 uuid.getNamespace = () => { return uuid.namespaces.custom ?? uuid.namespaces.fyi };
+
 uuid.setNamespace = (input: string) => { 
   if (uuid.isValid(input)) {
     uuid.namespaces.custom = input;
@@ -145,6 +146,7 @@ uuid.getDate = (input: string) => {
     return undefined;
   }
 }
+
 uuid.getTimestamp = (input: string) => uuid.getDate(input)?.valueOf();
 
 const v1date = (input: string) => {
