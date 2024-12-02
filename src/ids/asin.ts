@@ -73,7 +73,7 @@ asin.format = (input: string, style: 'asin' | 'isbn10h' | 'url' = 'asin') => {
  *
  * @returns A valid ASIN string, or `undefined`
  */
-asin.inspect = (input: string | URL) => {
+asin.inspect = (input: string) => {
   const parsed = asin.parse(input);
   const out: Info = {
     input,
