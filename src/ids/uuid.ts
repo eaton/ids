@@ -1,7 +1,7 @@
 import * as uuidLib from 'uuid';
 import { Uuid25 } from 'uuid25';
 import hash from 'object-hash';
-import { NotUndefined } from 'object-hash';
+import type { NotUndefined } from 'object-hash';
 import type { Info } from '../types.js';
 
 type styles = 'braced' | 'hex' | 'hyphenated' | 'urn' | 'uuid25';
@@ -59,7 +59,10 @@ uuid.getBytes = (input: string) => {
   }
 }
 
-uuid.fromBytes = (input: Uint8Array | number[]) => Uuid25.fromBytes(Uint8Array.from(input)).toHyphenated();
+uuid.fromBytes = (input: Uint8Array, strict = true) => {
+  if (!strict && input.length !== 16) return undefined;
+  return Uuid25.fromBytes(input).toHyphenated();
+}
 
 uuid.inspect = (input: string) => {
   const out: Info = {
@@ -99,9 +102,17 @@ uuid.v5 = uuidLib.v5;
 uuid.v6 = uuidLib.v6;
 uuid.v7 = uuidLib.v7;
 
-uuid.random = uuidLib.v4;
+uuid.random = () => uuidLib.v4();
 
 uuid.hash = (input: NotUndefined) => {
+  if (typeof input === 'string') {
+    return uuidLib.v5(input, uuid.getNamespace());
+  } else if (typeof input === null) {
+    return uuidLib.NIL;
+  }
+
+  // Anything else gets mashed through object-hash, turned into a string,
+  // and hashed from there.
   return uuidLib.v5(
     hash(input, { algorithm: 'passthrough' }),
     uuid.getNamespace()
