@@ -7,14 +7,76 @@ import type { Info } from '../types.js';
 type styles = 'braced' | 'hex' | 'hyphenated' | 'urn' | 'uuid25';
 
 /**
- * Given input, hashes the input and generates a UUID string from the
- * hash value. If no input is given, a random UUID is returned.
+ * Convenience wrapper for several UUID tasks.
+ * 
+ * - When given no input, returns a random UUID via `uuid.random()`
+ * - When given a string that is a valid UUID, returns the UUID without modification.
+ * - When given any other value, generates a UUIDv5 hash via `uuid.hash()`.
  */
 export function uuid(input?: unknown): string {
-  if (input === null && uuid.nil) return uuid.nil;
-  if (input !== undefined) return uuid.hash(input);
-  return uuid.random()
+  if (input === undefined) return uuid.random();
+  if (typeof input === 'string' && uuid.isValid(input)) return input;
+  return uuid.hash(input);
 }
+
+uuid.v1 = uuidLib.v1;
+uuid.v3 = uuidLib.v3;
+uuid.v4 = uuidLib.v4;
+uuid.v5 = uuidLib.v5;
+uuid.v6 = uuidLib.v6;
+uuid.v7 = uuidLib.v7;
+
+/**
+ * Generates a random UUIDv4.
+ * 
+ * For complete control (including setting custom random seeds, etc) use the
+ * `uuid.v4()` function directly.
+ */
+uuid.random = () => uuidLib.v4();
+
+/**
+ * Given an input value, return a UUIDv5 hash.
+ *
+ * Notes:
+ * 
+ * - UUIDv5 generation requires a namespace UUID; here, a custom internal
+ * `eatonfyi` namespace is used. `uuid.setNamespace(...)` can be used before
+ * calling any UUID generation functions to override it.
+ * - Non-null, non-string inputs are passed through `object-hash` to generate
+ * a string representation; all other hashing work is left to the UUIDv5
+ * library.
+ * - String values are passed straight to UUIDv5 without the object-hash step;
+ * this avoids any potential inconsistencies between the actual `uuid.v5`
+ * function and this helper.
+ * - If `null` is supplied as an input, the NIL UUID will be returned.
+ * 
+ * For complete control (including setting custom randomenss functions, etc) use
+ * the `uuid.v5` function directly.
+ */
+uuid.hash = (input: NotUndefined) => {
+  if (typeof input === undefined) {
+    throw new Error('Cannot hash undefined');
+  } else if (typeof input === 'string') {
+    return uuidLib.v5(input, uuid.getNamespace());
+  } else if (typeof input === null) {
+    return uuidLib.NIL;
+  }
+
+  // Anything else gets mashed through object-hash, turned into a string,
+  // and hashed from there.
+  return uuidLib.v5(
+    hash(input, { algorithm: 'passthrough' }),
+    uuid.getNamespace()
+  );
+}
+
+uuid.sortable = (input?: number | Date) => {
+  if (input === undefined) return uuidLib.v7();
+  if (typeof input === 'number') return uuidLib.v7({ msecs: input });
+  else return uuidLib.v7({ msecs: input.getTime() });
+}
+
+uuid.url = (input: string | URL) => uuidLib.v5(input.toString(), uuidLib.v5.URL);
 
 uuid.parse = (input: NotUndefined) => {
   const raw = input?.toString() || '';
@@ -94,38 +156,6 @@ uuid.inspect = (input: string) => {
   }
   return out;
 }
-
-uuid.v1 = uuidLib.v1;
-uuid.v3 = uuidLib.v3;
-uuid.v4 = uuidLib.v4;
-uuid.v5 = uuidLib.v5;
-uuid.v6 = uuidLib.v6;
-uuid.v7 = uuidLib.v7;
-
-uuid.random = () => uuidLib.v4();
-
-uuid.hash = (input: NotUndefined) => {
-  if (typeof input === 'string') {
-    return uuidLib.v5(input, uuid.getNamespace());
-  } else if (typeof input === null) {
-    return uuidLib.NIL;
-  }
-
-  // Anything else gets mashed through object-hash, turned into a string,
-  // and hashed from there.
-  return uuidLib.v5(
-    hash(input, { algorithm: 'passthrough' }),
-    uuid.getNamespace()
-  );
-}
-
-uuid.sortable = (input?: number | Date) => {
-  if (input === undefined) return uuidLib.v7();
-  if (typeof input === 'number') return uuidLib.v7({ msecs: input });
-  else return uuidLib.v7({ msecs: input.getTime() });
-}
-
-uuid.url = (input: string | URL) => uuidLib.v5(input.toString(), uuidLib.v5.URL);
 
 uuid.nil = uuidLib.NIL;
 

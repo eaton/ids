@@ -1,17 +1,18 @@
 # Eaton IDs
 
-A wrapper/nomralizer around libraries for a bunch of different ID and hash formats I've had to deal with on my personal projects.
+A wrapper/nomralizer around libraries for a bunch of different ID and hash formats I've had to deal with on my personal projects. Broadly, I'm less interested in efficiency here than giving myself a consistent set interface for using (and occasionally switching between) different ID and hash formats.
 
-If you need something lightweight to deal with one particular ID type or generate hashes for a specific purpose, this is not the library for you; it'll be much simpler to pull in one of the specific libraries this one uses under the hood:
+If you need something lightweight to deal with one particular ID type or generate hashes for a specific purpose, it'll be much simpler to pull in one of the specific libraries this one uses under the hood:
 
-- [gtin](https://github.com/xbpf/gtin) for GTIN, UPC, EAN, etc.
-- [isbn3](https://github.com/inventaire/isbn3) for ISBN10 and ISBN13
-- [nanoid](https://github.com/ai/nanoid) for easy, URL-safe uinque IDs
-- [ulid](https://github.com/perry-mitchell/ulidx) to generate and parse ULIDs (which might be pointless now that UUIDv7 is here)
-- [uuid](https://github.com/uuidjs/uuid) for UUIDv1-UUIDv7 support
-- [uuid25](https://github.com/uuid25/javascript) to format UUIDs in assorted ways
+- [nanoid](https://github.com/ai/nanoid) to generate fast, URL-safe unique IDs
+- [ulid](https://github.com/perry-mitchell/ulidx) to generate and parse ULIDs (might replace with UUIDv7)
+- [uuid](https://github.com/uuidjs/uuid) to generate UUIDv1-UUIDv7
+- [uuid25](https://github.com/uuid25/javascript) to parse and format assorted representations of UUID data
+- [fnv1a](https://github.com/sindresorhus/fnv1a) to generate quick, variable-length hashes of strings.
+- [gtin](https://github.com/xbpf/gtin) to validate and parse GTIN, UPC, EAN, etc.
+- [isbn3](https://github.com/inventaire/isbn3) to validate, parse, and convert between ISBN10 and ISBN13
 
-## The way it works
+## What's In Here
 
 Everything is broken down into three kinds of things:
 
@@ -27,17 +28,6 @@ Everything is broken down into three kinds of things:
 Generators are only meant to *create* unique IDs given a set of input parameters. NanoID, ULID, and UUIDv1/v3/v5 are examples.
 
 Hashers are meant to accept almost any input and generate some kind of easily-comparable representation on the other side. Nanohash and UUIDv5/v7 are examples.
-
-## Amazon Product IDs
-
-- `asin(input: string)` returns the raw input if it's a plausibly-formatted Amazon product ID, and `undefined` if it isn't.
-- `asin.isValid()` and `asin.isIsbn(input: string)` functions are useful for explicit validation
-- `asin.asUrl(input: string)` returns a full Amazon product URL for the ID if it's valid.
-
-## ISBNs
-
-- `isbn(input: string)` parses and returns detailed information about the internal structure of any valid ISBN; if valid, the `isbn10` and `isbn13` properties can be used to retrieve both permutations if available.
-- `isbn.asIsbn13(input: string)` is a useful shortcut, returning `undefined` if the ISBN is invalid, and expanding ISBN10s to the full 13 digits, in one step.
 
 ## Hashes
 
@@ -63,3 +53,18 @@ Hashers are meant to accept almost any input and generate some kind of easily-co
 ## ULIDs
 
 - `ulid()` generates a unique, creation-time-sortable identifier that's URL-safe and a touch shorter than a UUID. Uses the [ulid](https://github.com/perry-mitchell/ulidx) library.
+
+## Some special ID formats
+
+I do a lot of wrangling with my book and media collections; while they're neither hashes nor random IDs, ISBN and ASIN parsing/formatting is folded in here because I'm a huge nerd. Fun.
+
+### ISBNs
+
+- `isbn(input: string)` parses and returns detailed information about the internal structure of any valid ISBN; if valid, the `isbn10` and `isbn13` properties can be used to retrieve both permutations if available.
+- `isbn.asIsbn13(input: string)` is a useful shortcut, returning `undefined` if the ISBN is invalid, and expanding ISBN10s to the full 13 digits, in one step.
+
+### Amazon Product IDs
+
+- `asin(input: string)` returns the raw input if it's a plausibly-formatted Amazon product ID, and `undefined` if it isn't.
+- `asin.isValid()` and `asin.isIsbn(input: string)` functions are useful for explicit validation
+- `asin.asUrl(input: string)` returns a full Amazon product URL for the ID if it's valid.

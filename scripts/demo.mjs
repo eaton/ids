@@ -19,7 +19,7 @@ console.log('UUIDv7 1/1/2000\t', utils.uuid.v7({ msecs: new Date(2000, 0, 1).get
 
 console.log('\n-- Hash Generators --');
 console.log('FNV-1a\t\t', utils.fnv1a(example));
-console.log('FNV-1a 64-bit\t', utils.fnv1a64(example));
+console.log('FNV-1a 64-bit\t', utils.fnv1a(example, 64));
 console.log('Picohash\t', utils.picohash(example));
 console.log('Nanohash\t', utils.nanohash(example));
 console.log('Nanohash DNA\t', utils.nanohash(example, undefined, utils.alphabets.DNA));

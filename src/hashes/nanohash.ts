@@ -1,8 +1,7 @@
 import { Converter } from 'bufferbase';
-import fnv1a from '@sindresorhus/fnv1a';
-import type { NotUndefined } from '../index.js';
-import hash from 'object-hash';
+import { fnv1a } from '../hashes/fnv1a.js';
 import { alphabets } from '../alphabets.js';
+import type { NotUndefined } from '../index.js';
 
 /**
  * Hashes any value and returns a string using nanoid-style formatting options.
@@ -13,15 +12,15 @@ import { alphabets } from '../alphabets.js';
  * available in the alphabet.
  * 
  * The default options (64 bits encoded as url-safe characters) results in 10 to 11
- * characteer long hashes.
+ * character long hashes.
  *
  * @export
- * @param size The number of hash bytes to generate; defaults to 32.
+ * @param size The number of hash bytes to generate; defaults to 64.
  * @param alphabet The list of valid characters to use when generating the hash.
  */
 export function nanohash(input: NotUndefined, size: 32 | 64 | 128 | 256 | 512 | 1024 = 64, alphabet?: string) {
   const converter = new Converter(alphabets.Decimal, alphabet ?? alphabets.UrlSafe);
-  return converter.convert(fnv1a(hash(input, { algorithm: 'passthrough' }), { size }).toString());
+  return converter.convert(fnv1a(input, size).toString());
 }
 
 /**
