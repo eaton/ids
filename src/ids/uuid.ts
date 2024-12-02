@@ -56,10 +56,10 @@ uuid.random = () => uuidLib.v4();
 uuid.hash = (input: NotUndefined) => {
   if (typeof input === undefined) {
     throw new Error('Cannot hash undefined');
+  } else if (input === null) {
+    return uuidLib.NIL;
   } else if (typeof input === 'string') {
     return uuidLib.v5(input, uuid.getNamespace());
-  } else if (typeof input === null) {
-    return uuidLib.NIL;
   }
 
   // Anything else gets mashed through object-hash, turned into a string,
