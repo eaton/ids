@@ -51,14 +51,15 @@ uuid.format = (input: string, style: styles = 'hyphenated') => {
   }
 }
 
-uuid.bytes = (input: string) => {
+uuid.getBytes = (input: string) => {
   try {
-    const parsed = Uuid25.parse(input);
-    return parsed.toBytes();
+    return Uuid25.parse(input)?.toBytes();
   } catch {
     return undefined;
   }
 }
+
+uuid.fromBytes = (input: Uint8Array | number[]) => Uuid25.fromBytes(Uint8Array.from(input)).toHyphenated();
 
 uuid.inspect = (input: string) => {
   const out: Info = {
