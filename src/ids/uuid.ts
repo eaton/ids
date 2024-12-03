@@ -141,13 +141,13 @@ uuid.inspect = (input: string) => {
       out.timestamp = uuid.getTimestamp(input);
     }
 
-    out.minified = parsed.value;
+    out.minified = parsed.toHex();
     out.formatted = parsed.toHyphenated();
 
     out.styles = {
       braced: parsed.toBraced(),
       hex: parsed.toHex(),
-      hyphenated: out.minified,
+      hyphenated: parsed.toHyphenated(),
       urn: parsed.toUrn(),
       uuid25: out.minified,
     }
