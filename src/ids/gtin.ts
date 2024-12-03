@@ -210,13 +210,15 @@ gtin.prefix = (input: string): string | undefined => {
   if (val >= 930 && val <= 939) return 'Australia';
   if (val >= 940 && val <= 949) return 'New Zealand';
   if (val === 950) return 'GS1 Global Office';
-  if (val === 951) return 'EPC General Identifier / EPC Tag Data Standard';
+  if (val === 951) return 'EPC General Identifier / RFID tag data';
   if (val === 952) return 'GS1 demo use only';
   if (val === 955) return 'Malaysia';
   if (val === 958) return 'Macau';
   if (val >= 960 && val <= 969) return 'GTIN-8';
   if (val === 977) return 'Serial publications (ISSN)';
-  if (val >= 978 && val <= 979) return 'Bookland (ISBN-13) and Musicland (ISMN-13)';
+  if (minified.startsWith('9790')) return 'Musicland (ISMN-13)';
+  if (val >= 978 && val <= 979) return 'Bookland (ISBN-13)';
   if (val === 980) return 'Refund receipts';
-  if (val >= 981 && val <= 999) return 'GS1 coupon identification';
+  if (val >= 981 && val <= 983) return 'GS1 coupons for common currency areas';
+  if (val >= 990 && val <= 999) return 'GS1 coupons';
 }
