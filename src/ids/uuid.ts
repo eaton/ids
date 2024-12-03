@@ -1,7 +1,7 @@
 import * as uuidLib from 'uuid';
 import { Uuid25 } from 'uuid25';
-import hash from 'object-hash';
-import type { NotUndefined } from 'object-hash';
+import { stringify } from '../hashes/hash.js';
+import type { NotUndefined } from '../hashes/hash.js';
 import type { Info } from '../types.js';
 
 type styles = 'braced' | 'hex' | 'hyphenated' | 'urn' | 'uuid25';
@@ -42,13 +42,13 @@ uuid.random = () => uuidLib.v4();
  * - UUIDv5 generation requires a namespace UUID; here, a custom internal
  * `eatonfyi` namespace is used. `uuid.setNamespace(...)` can be used before
  * calling any UUID generation functions to override it.
- * - Non-null, non-string inputs are passed through `object-hash` to generate
- * a string representation; all other hashing work is left to the UUIDv5
- * library.
- * - String values are passed straight to UUIDv5 without the object-hash step;
- * this avoids any potential inconsistencies between the actual `uuid.v5`
- * function and this helper.
  * - If `null` is supplied as an input, the NIL UUID will be returned.
+ * - Non-null, non-string inputs are passed through `object-hash` via the
+ * `stringify()` helper to generate a consistent string representation; all other
+ * hashing work is left to the UUIDv5 library.
+ * - String values are passed straight to UUIDv5 without the object-stringify
+ * step; this avoids any potential inconsistencies between the actual `uuid.v5`
+ * function and this helper.
  * 
  * For complete control (including setting custom randomenss functions, etc) use
  * the `uuid.v5` function directly.
@@ -64,10 +64,7 @@ uuid.hash = (input: NotUndefined) => {
 
   // Anything else gets mashed through object-hash, turned into a string,
   // and hashed from there.
-  return uuidLib.v5(
-    hash(input, { algorithm: 'passthrough' }),
-    uuid.getNamespace()
-  );
+  return uuidLib.v5(stringify(input, true), uuid.getNamespace());
 }
 
 uuid.sortable = (input?: number | Date) => {

@@ -4,8 +4,8 @@ export type NotUndefined = hash.NotUndefined;
 
 export { hash };
 
-export function stringify(input: hash.NotUndefined) {
-  // if (typeof input === 'string') return input;
+export function stringify(input: hash.NotUndefined, rawStrings = false) {
+  if (rawStrings && typeof input === 'string') return input;
   return hash(input, { algorithm: 'passthrough' });
 }
 
