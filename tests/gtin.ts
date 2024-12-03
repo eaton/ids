@@ -3,6 +3,7 @@ import { gtin } from '../src/index.js';
 
 const values = {
   '2370009316708': { isValid: true, isChecked: true },
+  '715515081313': { isValid: true, isChecked: true },
   '1234': { isValid: false },
 };
 
