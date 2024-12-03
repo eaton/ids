@@ -32,22 +32,26 @@ Hashers are meant to accept almost any input and generate some kind of easily-co
 ## Hashes
 
 - `hash(input: NotUndefined)` just wraps the [object-hash](https://github.com/puleos/object-hash) library for convenience.
-- `md5()`, `sha1()`, `sha256()`, `sha256()` are convenience wrappers for `object-hash`'s algorithm-specific hashing options.
-- See `nanohash`, below, for an alternative that's not quite as secure but nice and short.
+- `md5()`, `sha1()`, `sha256()`, and `sha512()` are convenience wrappers for `object-hash`'s algorithm-specific hashing options.
+- `fnv1a(input: NotUndefined)` uses the same objct-stringification mechanism as `object-hash`, but uses the `fnv1a` hashing algorithm to generate 32-1024 bytes of hash data and return it as a BigInt.
+- `nanohash(input: any, size?: number, alphabet?: string)` wraps the `fnv1a` hashing algorithm in `nanoid`'s alphabet based encoding options. The default settings generate short (11-12 character) URL-friendly hashes that are reasonably collision-resistant.
+- `picohash(input: NotUndefined)` is a convenience wrapper for the 32-bit URL-safe `nanohash` options.
 
 ## NanoIDs
 
 - `nanoid(size?: number, alphabet?: string)` wraps the nanoid library, which generates arbitrarily-sized, url-safe, collision-resistant IDs. Shorter than UUIDs by default, with options to control the dictionary of characters used and the final length of the ID.
-- `nanohash(input: any, size?: number, alphabet?: string)` uses a [simpler hashing algorithm](https://github.com/planttheidea/hash-it) than the UUID and hash helpers, but leverages the [bufferbase](https://github.com/misebox/bufferbase) library to convert them into the same dictionary-based format as nanoid. By default hashes are 7 characters long, but that will shift around if longer/shorter alphabets are passed in.
 - `alphabets` is a useful list of potential character sets that can be used with nanoid and nanohash. URL Safe strings are the default for both, but options like 'Uppercase' and 'NoLookalikes' can be handy as well.
 
 ## UUIDs
 
 - `uuid()` generates a random UUID4.
-- `uuid(input: any)` uses `hash.sha1` from the hashing helper functions, but formats the resulting value as a UUID5. If an explicit null value is given, the [nil UUID](https://datatracker.ietf.org/doc/html/rfc4122.html#section-4.1.7) is returned.
-- `uuid.isValid(input: string)` can be used to check an existing string.
-- `uuid.random()` can be used to unambiguously generate a random UUID4.
-- `uuid.setNamespace()` can be used to set a custom namespace for UUID5 generation; it must be a valid UUID.
+- `uuid(input: any)` combines `object-hash` stringification with UUIDv5 hashing. If an explicit null value is given, the [nil UUID](https://datatracker.ietf.org/doc/html/rfc4122.html#section-4.1.7) is returned.
+- `uuid.isValid(input: string)` can be used to check an existing string vor UUID validity.
+- `uuid.random()` is a convenience wrapper for `uuid.v4`.
+- `uuid.sortable()` is a convenience wrapper for `uuid.v7`.
+- `uuid.getDate()` extracts the date component from a v1 or v7 UUID.
+- `uuid.url()` is a convenience wrapper for `uuid.v5()` that uses the official `uuid.namespaces.url` hashing namespace. It also ensures that URL-parsable strings and actual URL objects result in the same hash value.
+- `uuid.setNamespace()` can be used to set a custom namespace for UUIDv3/UUIDv5 generation; it must be a valid UUID.
 - `uuid.namespaces` provides convenience consts for the official [URL and DNS namespaces](https://datatracker.ietf.org/doc/html/rfc4122.html#appendix-C); `uuid.namespaces.fyi` is the one I use by default.
 
 ## ULIDs
