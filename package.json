@@ -23,7 +23,7 @@
   "scripts": {
     "demo": "node ./scripts/demo.mjs",
     "build": "pkgroll",
-    "prepare": "pkgroll --clean-dist --minify",
+    "package": "pkgroll --clean-dist --minify",
     "test": "tap"
   },
   "keywords": [
@@ -34,8 +34,12 @@
     "uuid",
     "hash"
   ],
-  "author": "eaton",
+  "author": "Jeff Eaton <jeff@eaton.fyi> (https://eaton.fyi)",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eaton/ids.git"
+  },
   "devDependencies": {
     "@tapjs/typescript": "^3.0.0",
     "@types/node": "^20.17.9",

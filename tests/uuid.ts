@@ -46,3 +46,11 @@ t.test('timestamps', t => {
   t.equal(uuid.getTimestamp(uuid.random()), undefined);
   t.end();
 });
+
+t.test('urls', t => {
+  const a = new URL('http://example.com/hello-world');
+  const b = 'http://example.com/hello-world';
+  
+  t.equal(uuid.url(a), uuid.url(b));
+  t.end();
+});
